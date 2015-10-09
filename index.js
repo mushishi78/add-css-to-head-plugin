@@ -4,6 +4,7 @@ function AddCSSToHeadPlugin(opts) {
   opts = opts || {};
   this.minify = 'minify' in opts ? opts.minify : true;
   this.clean = 'clean' in opts ? opts.clean : true;
+  this.amp = opts.amp;
 }
 
 AddCSSToHeadPlugin.prototype.apply = function(compiler) {
@@ -11,7 +12,7 @@ AddCSSToHeadPlugin.prototype.apply = function(compiler) {
 
   compiler.plugin('emit', function(compilation, done) {
     var htmlFiles = [],
-        cssFiles = []
+        cssFiles = [],
         css = '';
 
     for(var filename in compilation.assets) {
@@ -26,24 +27,32 @@ AddCSSToHeadPlugin.prototype.apply = function(compiler) {
     htmlFiles.forEach(function(filename) {
       var html = compilation.assets[filename].source();
       var purified = purify(html, css, { minify: self.minify });
-
-      var headStart = html.indexOf('<head>') + 6;
-      html = html.slice(0, headStart) + '<style>' + purified + '</style>' + html.slice(headStart);
-
-      compilation.assets[filename] = {
-        source: function() { return html; },
-        size:   function() { return html.length; }
-      };
+      html = insertIntoHead(html, purified, self.amp);
+      updateAsset(compilation.assets, filename, html);
     });
 
-    if(self.clean) {
-      cssFiles.forEach(function(filename) {
-        delete compilation.assets[filename];
-      });
-    }
-
+    if(self.clean) { removeFromAssets(compilation.assets, cssFiles); }
     done();
   });
 };
+
+function insertIntoHead(html, css, amp) {
+  var index = html.indexOf('<head>') + 6;
+  var before = html.slice(0, index);
+  var after = html.slice(index);
+  var styleTag = '<style ' + (amp ? 'amp-custom' : '') + '>';
+  return before + styleTag +  css + '</style>' + after;
+}
+
+function updateAsset(assets, filename, html) {
+  assets[filename] = {
+    source: function() { return html; },
+    size:   function() { return html.length; }
+  };
+}
+
+function removeFromAssets(assets, files) {
+  files.forEach(function(filename) { delete assets[filename]; });
+}
 
 module.exports = AddCSSToHeadPlugin;

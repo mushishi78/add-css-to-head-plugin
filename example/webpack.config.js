@@ -17,6 +17,6 @@ module.exports = {
   devServer: { contentBase: './public' },
   plugins: [
     new StaticWebpackPlugin('static.js'),
-    new AddCSSToHeadPlugin()
+    new AddCSSToHeadPlugin({ amp: true })
   ]
 };
