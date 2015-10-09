@@ -1,0 +1,17 @@
+{
+  "name": "add-css-to-head-plugin",
+  "version": "0.0.1",
+  "description": "Webpack plugin that adds purified css to html files.",
+  "main": "index.js",
+  "dependencies": {
+    "purify-css": "^1.0.17"
+  },
+  "devDependencies": {
+    "raw-loader": "^0.5.1",
+    "static-webpack-plugin": "^0.1.1",
+    "webpack": "^1.11.0",
+    "webpack-dev-server": "^1.10.1"
+  },
+  "author": "Max White <mushishi78@gmail.com>",
+  "license": "ISC"
+}
