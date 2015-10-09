@@ -4,7 +4,7 @@ var AddCSSToHeadPlugin = require('../index.js');
 module.exports = {
   entry: './static.js',
   output: {
-  	filename: 'static.js',
+    filename: 'static.js',
     path: './public',
     libraryTarget: 'umd'
   },
