@@ -1,6 +1,6 @@
 {
   "name": "add-css-to-head-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Webpack plugin that adds purified css to html files.",
   "main": "index.js",
   "dependencies": {

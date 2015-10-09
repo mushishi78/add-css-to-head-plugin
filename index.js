@@ -2,8 +2,8 @@ var purify = require('purify-css');
 
 function AddCSSToHeadPlugin(opts) {
   opts = opts || {};
-  this.minify = opts.minify || true;
-  this.clean = opts.clean || true;
+  this.minify = 'minify' in opts ? opts.minify : true;
+  this.clean = 'clean' in opts ? opts.clean : true;
 }
 
 AddCSSToHeadPlugin.prototype.apply = function(compiler) {
